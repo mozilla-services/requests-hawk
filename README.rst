@@ -27,6 +27,19 @@ Then, in your project, you can use it like that::
     )
     requests.post("/url", auth=hawk_auth)
 
+Integration with httpie
+=======================
+
+`Httpie <https://github.com/jakubroztocil/httpie>`_ is a tool which lets you do
+requests to a distant server in a nice and easy way. Under the hood, httpie
+uses the requests library. We've made it simple for you to plug hawk with it::
+
+   http POST localhost:5000/registration simple_push_url=https://test --verbose\
+   --auth-type=hawk --auth='c0d8cd2ec579a3599bef60f060412f01f5dc46f90465f42b5c47467481315f51:'
+
+Take care, don't forgot to add the extra `:` at the end of the hawk session
+token.
+
 How are the shared credentials shared?
 ======================================
 

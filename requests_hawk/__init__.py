@@ -96,3 +96,21 @@ def HKDF(secret, salt, info, size, hashmod=hashlib.sha256):
     """HKDF-extract-and-expand as a single function."""
     PRK = HKDF_extract(salt, secret, hashmod)
     return HKDF_expand(PRK, info, size, hashmod)
+
+
+# If httpie is installed, register the hawk plugin.
+try:
+
+    from httpie.plugins import AuthPlugin
+
+    class HawkPlugin(AuthPlugin):
+
+        name = 'Hawk Auth'
+        auth_type = 'hawk'
+        description = ''
+
+        def get_auth(self, hawk_session, _):
+            return HawkAuth(hawk_session=hawk_session)
+
+except ImportError:
+    pass
