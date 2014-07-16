@@ -109,8 +109,17 @@ try:
         auth_type = 'hawk'
         description = ''
 
-        def get_auth(self, hawk_session, _):
-            return HawkAuth(hawk_session=hawk_session)
+        def get_auth(self, id, key):
+            kwargs = {}
+            if key == '':
+                kwargs['hawk_session'] = id
+            else:
+                kwargs['credentials'] = {
+                    'id': id,
+                    'key': key,
+                    'algorithm': 'sha256'
+                }
+            return HawkAuth(**kwargs)
 
 except ImportError:
     pass
