@@ -51,7 +51,7 @@ class HawkAuth(AuthBase):
         self.credentials = credentials
 
         if server_url is not None:
-            self.host = urlparse(self.server_url).netloc
+            self.host = urlparse(server_url).netloc
         else:
             self.host = None
 

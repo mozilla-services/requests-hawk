@@ -23,3 +23,8 @@ class TestHawkAuth(unittest.TestCase):
                    'd14aa0',
             'algorithm': 'sha256'
         })
+
+    def test_server_url_is_parsed(self):
+        auth = HawkAuth(hawk_session="hello".encode("hex"),
+                        server_url="http://localhost:5000")
+        self.assertEquals(auth.host, "localhost:5000")
