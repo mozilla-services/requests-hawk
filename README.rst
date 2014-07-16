@@ -33,15 +33,15 @@ Great, how can I use it?
 
 First, you'll need to install it::
 
-  pip install requests-hawk
+    pip install requests-hawk
 
 Then, in your project, you can use it like that::
 
-  import requests
-  from requests_hawk import HawkAuth
+    import requests
+    from requests_hawk import HawkAuth
 
-  hawk_auth = HawkAuth(
-      hawk_session=resp.headers['hawk-session-token'],
-      server_url=self.server_url
-  )
-  requests.post("/url", auth=hawk_auth)
+    hawk_auth = HawkAuth(
+        hawk_session=resp.headers['hawk-session-token'],
+        server_url=self.server_url
+    )
+    requests.post("/url", auth=hawk_auth)
