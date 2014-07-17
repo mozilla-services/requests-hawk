@@ -58,10 +58,10 @@ hawk credentials:
 Do an HKDF derivation on the given session token. You’ll need to use the
 following parameters::
 
-    key_material = HKDF(hawk_session, “”, ‘identity.mozilla.com/picl/v1/sessionToken’, 32*3)
+    key_material = HKDF(hawk_session, “”, ‘identity.mozilla.com/picl/v1/sessionToken’, 32*2)
 
 The key material you’ll get out of the HKDF need to be separated into two
-parts, the first 32 hex caracters are the hawk id, and the next 32 ones are the
+parts, the first 32 hex characters are the hawk id, and the next 32 ones are the
 hawk key::
 
     credentials = {
