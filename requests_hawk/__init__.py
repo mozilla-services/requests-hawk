@@ -42,7 +42,7 @@ class HawkAuth(AuthBase):
         elif hawk_session is not None:
             hawk_session = hawk_session.decode('hex')
             keyInfo = 'identity.mozilla.com/picl/v1/sessionToken'
-            keyMaterial = HKDF(hawk_session, "", keyInfo, 32*3)
+            keyMaterial = HKDF(hawk_session, "", keyInfo, 32*2)
             credentials = {
                 'id': keyMaterial[:32].encode("hex"),
                 'key': keyMaterial[32:64].encode("hex"),
