@@ -6,8 +6,8 @@ This project allows you to use `the python requests library
 <https://github.com/hueniverse/hawk>`_ mechanism.
 
 Hawk itself does not provide any mechanism for obtaining or transmitting the
-set of shared credentials required, but this project proposes the following
-scheme (that we use accross mozilla services projects).
+set of shared credentials required, but this project proposes a scheme we use
+accross mozilla services projects.
 
 Great, how can I use it?
 ========================
