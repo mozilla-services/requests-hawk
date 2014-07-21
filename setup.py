@@ -12,7 +12,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = ['requests', 'mohawk']
 
 setup(name='requests-hawk',
-      version='0.1.0',
+      version='0.1.1',
       description='requests-hawk',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
