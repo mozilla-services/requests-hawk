@@ -1,6 +1,10 @@
 Requests-Hawk
 #############
 
+.. image:: https://travis-ci.org/mozilla-services/requests-hawk.png
+    :target: https://travis-ci.org/mozilla-services/requests-hawk
+
+
 This project allows you to use `the python requests library
 <http://python-requests.org/>`_ with `the hawk authentication
 <https://github.com/hueniverse/hawk>`_ mechanism.
