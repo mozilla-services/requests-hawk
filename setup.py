@@ -12,13 +12,16 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = ['requests', 'mohawk']
 
 setup(name='requests-hawk',
-      version='0.1.1',
+      version='0.1.2',
       description='requests-hawk',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Intended Audience :: Developers",
           "Programming Language :: Python",
           "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.4"
       ],
       entry_points={
           'httpie.plugins.auth.v1': [
