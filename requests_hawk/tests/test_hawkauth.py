@@ -17,7 +17,7 @@ class TestHawkAuth(unittest.TestCase):
 
     def test_credentials_are_derived_from_session(self):
         auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"))
-        self.assertDictEqual(auth.credentials, {
+        self.assertEqual(auth.credentials, {
             'id': b'15064c77e946608226a9c2d8da61ac5e0e85f325334965c68a3f47e809'
                   b'1f8412',
             'key': b'cb3829c6d6fe3f58609d58f09818295dfbdf45803ec50b8d66c4132f7'

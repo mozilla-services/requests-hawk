@@ -70,3 +70,9 @@ hawk key::
         'algorithm': 'sha256'
     }
 
+Run tests
+=========
+
+To run test, you can use tox::
+
+    tox
