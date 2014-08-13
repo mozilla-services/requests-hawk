@@ -1,4 +1,5 @@
 from requests_hawk import HawkAuth
+import codecs
 import unittest
 
 
@@ -15,16 +16,16 @@ class TestHawkAuth(unittest.TestCase):
         self.assertRaises(TypeError, HawkAuth, hawk_session="test")
 
     def test_credentials_are_derived_from_session(self):
-        auth = HawkAuth(hawk_session="hello".encode("hex"))
+        auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"))
         self.assertDictEqual(auth.credentials, {
-            'id': '15064c77e946608226a9c2d8da61ac5e0e85f325334965c68a3f47e8091'
-                  'f8412',
-            'key': 'cb3829c6d6fe3f58609d58f09818295dfbdf45803ec50b8d66c4132f7a'
-                   'd14aa0',
+            'id': b'15064c77e946608226a9c2d8da61ac5e0e85f325334965c68a3f47e809'
+                  b'1f8412',
+            'key': b'cb3829c6d6fe3f58609d58f09818295dfbdf45803ec50b8d66c4132f7'
+                   b'ad14aa0',
             'algorithm': 'sha256'
         })
 
     def test_server_url_is_parsed(self):
-        auth = HawkAuth(hawk_session="hello".encode("hex"),
+        auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
                         server_url="http://localhost:5000")
         self.assertEquals(auth.host, "localhost:5000")

@@ -2,10 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import binascii
+import codecs
 import hashlib
 import hmac
 import math
-from urlparse import urlparse
+from six.moves import xrange
+from six.moves.urllib.parse import urlparse
+from six import text_type
 
 import mohawk
 from requests.auth import AuthBase
@@ -40,12 +44,15 @@ class HawkAuth(AuthBase):
                                  "or 'credentials'.")
 
         elif hawk_session is not None:
-            hawk_session = hawk_session.decode('hex')
+            try:
+                hawk_session = codecs.decode(hawk_session, 'hex_codec')
+            except binascii.Error as e:
+                raise TypeError(e)
             keyInfo = 'identity.mozilla.com/picl/v1/sessionToken'
             keyMaterial = HKDF(hawk_session, "", keyInfo, 32*2)
             credentials = {
-                'id': keyMaterial[:32].encode("hex"),
-                'key': keyMaterial[32:64].encode("hex"),
+                'id': codecs.encode(keyMaterial[:32], "hex_codec"),
+                'key': codecs.encode(keyMaterial[32:64], "hex_codec"),
                 'algorithm': 'sha256'
             }
         self.credentials = credentials
@@ -75,18 +82,22 @@ def HKDF_extract(salt, IKM, hashmod=hashlib.sha256):
     """HKDF-Extract; see RFC-5869 for the details."""
     if salt is None:
         salt = b"\x00" * hashmod().digest_size
+    if isinstance(salt, text_type):
+        salt = salt.encode("utf-8")
     return hmac.new(salt, IKM, hashmod).digest()
 
 
 def HKDF_expand(PRK, info, L, hashmod=hashlib.sha256):
     """HKDF-Expand; see RFC-5869 for the details."""
+    if isinstance(info, text_type):
+        info = info.encode("utf-8")
     digest_size = hashmod().digest_size
     N = int(math.ceil(L * 1.0 / digest_size))
     assert N <= 255
     T = b""
     output = []
     for i in xrange(1, N + 1):
-        data = T + info + chr(i)
+        data = T + info + chr(i).encode("utf-8")
         T = hmac.new(PRK, data, hashmod).digest()
         output.append(T)
     return b"".join(output)[:L]
