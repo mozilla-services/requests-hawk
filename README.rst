@@ -35,7 +35,7 @@ Integration with httpie
 =======================
 
 `Httpie <https://github.com/jakubroztocil/httpie>`_ is a tool which lets you do
-requests to a distant server in a nice and easy way. Under the hood, httpie
+requests to a distant server in a nice and easy way. Under the hood, ``httpie``
 uses the requests library. We've made it simple for you to plug hawk with it.
 
 If you know the id and key, use it like that::
@@ -48,7 +48,7 @@ Or, if you want to use the hawk session token, you can do as follows::
    http POST localhost:5000/registration\
    --auth-type=hawk --auth='c0d8cd2ec579a3599bef60f060412f01f5dc46f90465f42b5c47467481315f51:'
 
-Take care, don't forgot to add the extra `:` at the end of the hawk session
+Take care, don't forget to add the extra ``:`` at the end of the hawk session
 token for it to be considered like so.
 
 How are the shared credentials shared?
@@ -57,16 +57,16 @@ How are the shared credentials shared?
 Okay, on to the actual details.
 
 The server gives you a session token, that you'll need to derive to get the
-hawk credentials:
+hawk credentials.
 
 Do an HKDF derivation on the given session token. You’ll need to use the
 following parameters::
 
-    key_material = HKDF(hawk_session, “”, ‘identity.mozilla.com/picl/v1/sessionToken’, 32*2)
+    key_material = HKDF(hawk_session, '', 'identity.mozilla.com/picl/v1/sessionToken', 32*2)
 
-The key material you’ll get out of the HKDF need to be separated into two
-parts, the first 32 hex characters are the hawk id, and the next 32 ones are the
-hawk key::
+The key material you’ll get out of the HKDF needs to be separated into two
+parts, the first 32 hex characters are the ``hawk id``, and the next 32 ones are the
+``hawk key``::
 
     credentials = {
         'id': keyMaterial[0:32]
