@@ -29,3 +29,17 @@ class TestHawkAuth(unittest.TestCase):
         auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
                         server_url="http://localhost:5000")
         self.assertEquals(auth.host, "localhost:5000")
+
+    def test_hawk_auth_can_handle_a_timestamp_argument(self):
+        auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
+                        _timestamp=1431698847)
+
+        class Request(object):
+            method = 'GET'
+            body = ''
+            url = 'http://www.example.com'
+            headers = {'Content-Type': 'application/json'}
+
+        r = auth(Request())
+        self.assertTrue('ts="1431698847"' in r.headers['Authorization'],
+                        "Timestamp doesn't match")
