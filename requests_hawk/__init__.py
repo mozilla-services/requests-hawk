@@ -37,7 +37,8 @@ class HawkAuth(AuthBase):
     exclusive.  You should set one or the other.
 
     """
-    def __init__(self, hawk_session=None, credentials=None, server_url=None):
+    def __init__(self, hawk_session=None, credentials=None, server_url=None,
+                 _timestamp=None):
         if ((credentials, hawk_session) == (None, None)
                 or (credentials is not None and hawk_session is not None)):
             raise AttributeError("You should pass either 'hawk_session' "
@@ -56,6 +57,7 @@ class HawkAuth(AuthBase):
                 'algorithm': 'sha256'
             }
         self.credentials = credentials
+        self._timestamp = _timestamp
 
         if server_url is not None:
             self.host = urlparse(server_url).netloc
@@ -71,7 +73,8 @@ class HawkAuth(AuthBase):
             r.url,
             r.method,
             content=r.body or '',
-            content_type=r.headers.get('Content-Type', '')
+            content_type=r.headers.get('Content-Type', ''),
+            _timestamp=self._timestamp
         )
 
         r.headers['Authorization'] = sender.request_header
