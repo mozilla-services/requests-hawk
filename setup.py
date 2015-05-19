@@ -13,13 +13,13 @@ with codecs.open(os.path.join(here, 'CHANGES.txt'), encoding='utf-8') as f:
 requires = ['requests', 'mohawk']
 
 setup(name='requests-hawk',
-      version='0.2.0-DEV',
+      version='0.2.0',
       description='requests-hawk',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Intended Audience :: Developers",
           "Programming Language :: Python",
-          "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+          "License :: OSI Approved :: Apache Software License",
           "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 3",
           "Programming Language :: Python :: 3.4"
@@ -29,7 +29,7 @@ setup(name='requests-hawk',
               'httpie_hawk = requests_hawk:HawkPlugin'
           ]
       },
-      license="MPLv2.0",
+      license='Apache License (2.0)',
       author='Mozilla Services',
       author_email='services-dev@mozilla.org',
       url='https://github.com/mozilla-services/requests-hawk',
