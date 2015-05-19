@@ -1,10 +1,12 @@
 CHANGELOG
 =========
 
-0.2.0 (unreleased)
+0.2.0 (2015-05-19)
 ------------------
 
-- No changes yet.
+- Fix encoding error in setup.py with Python 3.4
+- Add a configuration parameter in order to be able to set the
+  timestamp to use.
 
 
 0.1.2 (2014-08-13)
