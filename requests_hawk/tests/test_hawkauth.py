@@ -48,9 +48,7 @@ class TestHawkAuth(unittest.TestCase):
         auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
                         _timestamp=1431698847)
 
-        # XXX kennethreitz/requests#3948a9562db886e7ead6a48dbcbada34fbeb0838 is
-        # XXX needed in order to remove the ``data={}`` parameter in this test.
-        request = Request('PUT', 'http://www.example.com', data={},
+        request = Request('PUT', 'http://www.example.com',
                           json={"foo": "bar"}, auth=auth)
         r = request.prepare()
 
