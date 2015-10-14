@@ -1,6 +1,7 @@
-from requests_hawk import HawkAuth
 import codecs
 import unittest
+from requests import Request
+from requests_hawk import HawkAuth
 
 
 class TestHawkAuth(unittest.TestCase):
@@ -34,12 +35,23 @@ class TestHawkAuth(unittest.TestCase):
         auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
                         _timestamp=1431698847)
 
-        class Request(object):
-            method = 'GET'
-            body = ''
-            url = 'http://www.example.com'
-            headers = {'Content-Type': 'application/json'}
+        request = Request('PUT', 'http://www.example.com',
+                          {'Content-Type': 'application/json'},
+                          data='{"foo": "bar"}', auth=auth)
 
-        r = auth(Request())
+        r = request.prepare()
         self.assertTrue('ts="1431698847"' in r.headers['Authorization'],
                         "Timestamp doesn't match")
+        self.assertEqual(r.body, '{"foo": "bar"}')
+
+    def test_hawk_auth_is_called_when_json_present(self):
+        auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
+                        _timestamp=1431698847)
+
+        request = Request('PUT', 'http://www.example.com',
+                          json={"foo": "bar"}, auth=auth)
+        r = request.prepare()
+
+        self.assertTrue('ts="1431698847"' in r.headers['Authorization'],
+                        "Timestamp doesn't match")
+        self.assertEqual(r.body, '{"foo": "bar"}')
