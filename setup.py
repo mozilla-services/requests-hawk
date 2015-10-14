@@ -13,7 +13,7 @@ with codecs.open(os.path.join(here, 'CHANGES.txt'), encoding='utf-8') as f:
 requires = ['requests>=2.8.1', 'mohawk']
 
 setup(name='requests-hawk',
-      version='0.3.0.dev0',
+      version='0.2.1',
       description='requests-hawk',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -21,6 +21,8 @@ setup(name='requests-hawk',
           "Programming Language :: Python",
           "License :: OSI Approved :: Apache Software License",
           "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 2.6",
+          "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3",
           "Programming Language :: Python :: 3.4"
       ],
