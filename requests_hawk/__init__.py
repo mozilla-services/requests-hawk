@@ -35,12 +35,12 @@ class HawkAuth(AuthBase):
     """
     def __init__(self, hawk_session=None, credentials=None, server_url=None,
                  _timestamp=None):
-        if ((credentials, hawk_session) == (None, None)
-                or (credentials is not None and hawk_session is not None)):
+        if (hawk_session and credentials
+                or not hawk_session and not credentials):
             raise AttributeError("You should pass either 'hawk_session' "
                                  "or 'credentials'.")
 
-        elif hawk_session is not None:
+        if hawk_session:
             try:
                 hawk_session = codecs.decode(hawk_session, 'hex_codec')
             except binascii.Error as e:
@@ -52,6 +52,7 @@ class HawkAuth(AuthBase):
                 'key': codecs.encode(keyMaterial[32:64], "hex_codec"),
                 'algorithm': 'sha256'
             }
+
         self.credentials = credentials
         self._timestamp = _timestamp
         self.host = urlparse(server_url).netloc if server_url else None
