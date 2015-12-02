@@ -54,11 +54,7 @@ class HawkAuth(AuthBase):
             }
         self.credentials = credentials
         self._timestamp = _timestamp
-
-        if server_url is not None:
-            self.host = urlparse(server_url).netloc
-        else:
-            self.host = None
+        self.host = urlparse(server_url).netloc if server_url else None
 
     def __call__(self, r):
         if self.host is not None:
