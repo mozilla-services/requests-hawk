@@ -13,6 +13,25 @@ class TestHawkAuth(unittest.TestCase):
     def test_hawkauth_errors_when_no_auth_is_set(self):
         self.assertRaises(AttributeError, HawkAuth)
 
+    def test_hawk_auth_supports_credentials_as_dict(self):
+        credentials = {
+            'id': 'test_id',
+            'key': 'test_key',
+            'algorithm': 'sha256'
+        }
+        auth = HawkAuth(credentials=credentials, _timestamp=1431698426)
+        request = Request('PUT', 'http://www.example.com',
+                          json={"foo": "bar"}, auth=auth)
+        r = request.prepare()
+        auth_header = r.headers['Authorization']
+        self.assertTrue('id="test_id"' in auth_header, "ID doesn't match")
+        self.assertTrue('hash="lby/vvNtW9J/ZI39Nnfcrl2ESgx8JIIZ/SaIvfd3iaQ="'
+                        in auth_header,
+                        "Hash doesn't match")
+        self.assertTrue('ts="1431698426"' in auth_header,
+                        "Timestamp doesn't match")
+        self.assertEqual(r.body, '{"foo": "bar"}')
+
     def test_key_non_hex_values_throws(self):
         self.assertRaises(TypeError, HawkAuth, hawk_session="test")
 
