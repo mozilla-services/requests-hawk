@@ -119,14 +119,14 @@ try:
         auth_type = 'hawk'
         description = ''
 
-        def get_auth(self, id, key):
+        def get_auth(self, username, password):
             kwargs = {}
-            if key == '':
-                kwargs['hawk_session'] = id
+            if password == '':
+                kwargs['hawk_session'] = username
             else:
                 kwargs['credentials'] = {
-                    'id': id,
-                    'key': key,
+                    'id': username,
+                    'key': password,
                     'algorithm': 'sha256'
                 }
             return HawkAuth(**kwargs)
