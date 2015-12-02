@@ -10,7 +10,7 @@ with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with codecs.open(os.path.join(here, 'CHANGES.txt'), encoding='utf-8') as f:
     CHANGES = f.read()
 
-requires = ['requests>=2.8.1', 'mohawk']
+requires = ['requests!=2.8.0', 'mohawk']
 
 setup(name='requests-hawk',
       version='0.3.0.dev0',
