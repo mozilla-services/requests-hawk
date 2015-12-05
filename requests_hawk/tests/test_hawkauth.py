@@ -45,6 +45,11 @@ class TestHawkAuth(unittest.TestCase):
             'algorithm': 'sha256'
         })
 
+    def test_overriding_session_algorithm(self):
+        auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
+                        algorithm='sha1')
+        self.assertEqual(auth.credentials['algorithm'], 'sha1')
+
     def test_server_url_is_parsed(self):
         auth = HawkAuth(hawk_session=codecs.encode(b"hello", "hex_codec"),
                         server_url="http://localhost:5000")

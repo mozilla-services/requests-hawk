@@ -19,6 +19,11 @@ class HawkAuth(AuthBase):
       You don't need to set this parameter if you already know the hawk
       credentials (Optional).
 
+    :param algorithm:
+      A string containing the name of the algorithm to be used.
+      Currently only applies if passing `hawk_session`.
+      (Optional, defaults to 'sha256').
+
     :param credentials:
       Python dict containing credentials information, with keys for "id",
       "key" and "algorithm" (Optional).
@@ -33,8 +38,8 @@ class HawkAuth(AuthBase):
     exclusive.  You should set one or the other.
 
     """
-    def __init__(self, hawk_session=None, credentials=None, server_url=None,
-                 _timestamp=None):
+    def __init__(self, hawk_session=None, algorithm='sha256',
+                 credentials=None, server_url=None, _timestamp=None):
         if (hawk_session and credentials
                 or not hawk_session and not credentials):
             raise AttributeError("You should pass either 'hawk_session' "
@@ -47,10 +52,12 @@ class HawkAuth(AuthBase):
                 raise TypeError(e)
             keyInfo = 'identity.mozilla.com/picl/v1/sessionToken'
             keyMaterial = HKDF(hawk_session, "", keyInfo, 32*2)
-            credentials = {
-                'id': codecs.encode(keyMaterial[:32], "hex_codec"),
-                'key': codecs.encode(keyMaterial[32:64], "hex_codec"),
-                'algorithm': 'sha256'
+            id = codecs.encode(keyMaterial[:32], "hex_codec")
+            key = codecs.encode(keyMaterial[32:64], "hex_codec")
+            self.credentials = {
+                'id': id,
+                'key': key,
+                'algorithm': algorithm
             }
 
         self.credentials = credentials
