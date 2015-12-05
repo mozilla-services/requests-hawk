@@ -29,12 +29,7 @@ Then, in your project, if you know the `id` and `key`, you can use::
     import requests
     from requests_hawk import HawkAuth
 
-    credentials = {
-        'id': 'my-hawk-id',
-        'key': 'my-hawk-secret-key',
-        'algorithm': 'sha256'
-    }
-    hawk_auth = HawkAuth(credentials=credentials)
+    hawk_auth = HawkAuth(id='my-hawk-id', key='my-hawk-secret-key')
     requests.post("https://example.com/url", auth=hawk_auth)
 
 Or if you need to derive them from the hawk session token, instead use::
@@ -52,6 +47,12 @@ Or if you need to derive them from the hawk session token, instead use::
 
 In the second example, the ``server_url`` parameter to ``HawkAuth`` was used to
 provide a default host name, to avoid having to repeat it for each request.
+
+If you wish to override the default algorithm of ``sha256``, pass the desired
+algorithm name using the optional ``algorithm`` parameter.
+
+Note: The ``credentials`` parameter has been removed. Instead pass ``id`` and
+``key`` separately (as above), or pass the existing dict as ``**credentials``.
 
 Integration with httpie
 =======================

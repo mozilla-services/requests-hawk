@@ -6,20 +6,32 @@ from requests_hawk import HawkAuth
 
 class TestHawkAuth(unittest.TestCase):
 
-    def test_hawkauth_errors_when_credentials_and_hawk_session_passed(self):
+    def test_hawkauth_errors_when_id_and_key_and_hawk_session_passed(self):
         self.assertRaises(AttributeError, HawkAuth,
-                          credentials={}, hawk_session="test")
+                          id='test', key='test', hawk_session="test")
+
+    def test_hawkauth_errors_when_id_and_hawk_session_passed(self):
+        self.assertRaises(AttributeError, HawkAuth,
+                          id='test', hawk_session="test")
+
+    def test_hawkauth_errors_when_key_and_hawk_session_passed(self):
+        self.assertRaises(AttributeError, HawkAuth,
+                          key='test', hawk_session="test")
+
+    def test_hawkauth_errors_when_only_id_passed(self):
+        self.assertRaises(AttributeError, HawkAuth, id='test')
+
+    def test_hawkauth_errors_when_only_key_passed(self):
+        self.assertRaises(AttributeError, HawkAuth, key='test')
+
+    def test_hawkauth_errors_when_credentials_passed(self):
+        self.assertRaises(AttributeError, HawkAuth, credentials={})
 
     def test_hawkauth_errors_when_no_auth_is_set(self):
         self.assertRaises(AttributeError, HawkAuth)
 
-    def test_hawk_auth_supports_credentials_as_dict(self):
-        credentials = {
-            'id': 'test_id',
-            'key': 'test_key',
-            'algorithm': 'sha256'
-        }
-        auth = HawkAuth(credentials=credentials, _timestamp=1431698426)
+    def test_hawk_auth_supports_credentials_as_parameters(self):
+        auth = HawkAuth(id='test_id', key='test_key', _timestamp=1431698426)
         request = Request('PUT', 'http://www.example.com',
                           json={"foo": "bar"}, auth=auth)
         r = request.prepare()
@@ -31,6 +43,10 @@ class TestHawkAuth(unittest.TestCase):
         self.assertTrue('ts="1431698426"' in auth_header,
                         "Timestamp doesn't match")
         self.assertEqual(r.body, '{"foo": "bar"}')
+
+    def test_overriding_credentials_algorithm(self):
+        auth = HawkAuth(id='test_id', key='test_key', algorithm='sha1')
+        self.assertEqual(auth.credentials['algorithm'], 'sha1')
 
     def test_key_non_hex_values_throws(self):
         self.assertRaises(TypeError, HawkAuth, hawk_session="test")
