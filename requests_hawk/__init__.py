@@ -25,7 +25,7 @@ class HawkAuth(AuthBase):
 
     :param server_url:
       The url of the server, this is useful for hawk when signing the requests.
-      In case this is omited, fallbacks to the value of the "Host" header of
+      In case this is omitted, fallbacks to the value of the "Host" header of
       the request (Optional).
 
 

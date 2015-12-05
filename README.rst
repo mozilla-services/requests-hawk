@@ -11,7 +11,7 @@ This project allows you to use `the python requests library
 
 Hawk itself does not provide any mechanism for obtaining or transmitting the
 set of shared credentials required, but this project proposes a scheme we use
-accross mozilla services projects.
+across mozilla services projects.
 
 Great, how can I use it?
 ========================
@@ -59,12 +59,12 @@ Okay, on to the actual details.
 The server gives you a session token, that you'll need to derive to get the
 hawk credentials.
 
-Do an HKDF derivation on the given session token. You’ll need to use the
+Do an HKDF derivation on the given session token. You'll need to use the
 following parameters::
 
     key_material = HKDF(hawk_session, '', 'identity.mozilla.com/picl/v1/sessionToken', 32*2)
 
-The key material you’ll get out of the HKDF needs to be separated into two
+The key material you'll get out of the HKDF needs to be separated into two
 parts, the first 32 hex characters are the ``hawk id``, and the next 32 ones are the
 ``hawk key``::
 
