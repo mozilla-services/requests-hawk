@@ -19,46 +19,52 @@ class HawkAuth(AuthBase):
       You don't need to set this parameter if you already know the hawk
       credentials (Optional).
 
-    :param credentials:
-      Python dict containing credentials information, with keys for "id",
-      "key" and "algorithm" (Optional).
+    :param id:
+      The hawk id string to use for authentication (Optional).
+
+    :param key:
+      A string containing the hawk secret key (Optional).
+
+    :param algorithm:
+      A string containing the name of the algorithm to be used.
+      (Optional, defaults to 'sha256').
 
     :param server_url:
       The url of the server, this is useful for hawk when signing the requests.
-      In case this is omited, fallbacks to the value of the "Host" header of
+      In case this is omitted, fallbacks to the value of the "Host" header of
       the request (Optional).
 
-
-    Note that the `hawk_session` and `credentials` parameters are mutually
-    exclusive.  You should set one or the other.
-
+    Note that the `hawk_session` and `id` parameters are mutually exclusive.
+    You should use either `hawk_session` or both `id` and 'key'.
     """
-    def __init__(self, hawk_session=None, credentials=None, server_url=None,
-                 _timestamp=None):
-        if ((credentials, hawk_session) == (None, None)
-                or (credentials is not None and hawk_session is not None)):
-            raise AttributeError("You should pass either 'hawk_session' "
-                                 "or 'credentials'.")
+    def __init__(self, hawk_session=None, id=None, key=None, algorithm='sha256',
+                 credentials=None, server_url=None, _timestamp=None):
+        if credentials is not None:
+            raise AttributeError("The 'credentials' param has been removed. "
+                                 "Pass 'id' and 'key' instead, or '**credentials_dict'.")
 
-        elif hawk_session is not None:
+        if (hawk_session and (id or key)
+                or not hawk_session and not (id and key)):
+            raise AttributeError("You should pass either 'hawk_session' "
+                                 "or both 'id' and 'key'.")
+
+        if hawk_session:
             try:
                 hawk_session = codecs.decode(hawk_session, 'hex_codec')
             except binascii.Error as e:
                 raise TypeError(e)
             keyInfo = 'identity.mozilla.com/picl/v1/sessionToken'
             keyMaterial = HKDF(hawk_session, "", keyInfo, 32*2)
-            credentials = {
-                'id': codecs.encode(keyMaterial[:32], "hex_codec"),
-                'key': codecs.encode(keyMaterial[32:64], "hex_codec"),
-                'algorithm': 'sha256'
-            }
-        self.credentials = credentials
-        self._timestamp = _timestamp
+            id = codecs.encode(keyMaterial[:32], "hex_codec")
+            key = codecs.encode(keyMaterial[32:64], "hex_codec")
 
-        if server_url is not None:
-            self.host = urlparse(server_url).netloc
-        else:
-            self.host = None
+        self.credentials = {
+            'id': id,
+            'key': key,
+            'algorithm': algorithm
+        }
+        self._timestamp = _timestamp
+        self.host = urlparse(server_url).netloc if server_url else None
 
     def __call__(self, r):
         if self.host is not None:
@@ -119,17 +125,10 @@ try:
         auth_type = 'hawk'
         description = ''
 
-        def get_auth(self, id, key):
-            kwargs = {}
-            if key == '':
-                kwargs['hawk_session'] = id
-            else:
-                kwargs['credentials'] = {
-                    'id': id,
-                    'key': key,
-                    'algorithm': 'sha256'
-                }
-            return HawkAuth(**kwargs)
+        def get_auth(self, username, password):
+            if password == '':
+                return HawkAuth(hawk_session=username)
+            return HawkAuth(id=username, key=password)
 
 except ImportError:
     pass

@@ -11,16 +11,30 @@ This project allows you to use `the python requests library
 
 Hawk itself does not provide any mechanism for obtaining or transmitting the
 set of shared credentials required, but this project proposes a scheme we use
-accross mozilla services projects.
+across mozilla services projects.
 
 Great, how can I use it?
 ========================
 
 First, you'll need to install it::
 
+  .. code-block:: bash
+
     pip install requests-hawk
 
-Then, in your project, you can use it like that::
+Then, in your project, if you know the `id` and `key`, you can use::
+
+  .. code-block:: python
+
+    import requests
+    from requests_hawk import HawkAuth
+
+    hawk_auth = HawkAuth(id='my-hawk-id', key='my-hawk-secret-key')
+    requests.post("https://example.com/url", auth=hawk_auth)
+
+Or if you need to derive them from the hawk session token, instead use::
+
+  .. code-block:: python
 
     import requests
     from requests_hawk import HawkAuth
@@ -31,6 +45,15 @@ Then, in your project, you can use it like that::
     )
     requests.post("/url", auth=hawk_auth)
 
+In the second example, the ``server_url`` parameter to ``HawkAuth`` was used to
+provide a default host name, to avoid having to repeat it for each request.
+
+If you wish to override the default algorithm of ``sha256``, pass the desired
+algorithm name using the optional ``algorithm`` parameter.
+
+Note: The ``credentials`` parameter has been removed. Instead pass ``id`` and
+``key`` separately (as above), or pass the existing dict as ``**credentials``.
+
 Integration with httpie
 =======================
 
@@ -40,10 +63,14 @@ uses the requests library. We've made it simple for you to plug hawk with it.
 
 If you know the id and key, use it like that::
 
+  .. code-block:: bash
+
    http POST localhost:5000/registration\
    --auth-type=hawk --auth='id:key'
 
 Or, if you want to use the hawk session token, you can do as follows::
+
+  .. code-block:: bash
 
    http POST localhost:5000/registration\
    --auth-type=hawk --auth='c0d8cd2ec579a3599bef60f060412f01f5dc46f90465f42b5c47467481315f51:'
@@ -59,14 +86,18 @@ Okay, on to the actual details.
 The server gives you a session token, that you'll need to derive to get the
 hawk credentials.
 
-Do an HKDF derivation on the given session token. You’ll need to use the
+Do an HKDF derivation on the given session token. You'll need to use the
 following parameters::
+
+  .. code-block:: python
 
     key_material = HKDF(hawk_session, '', 'identity.mozilla.com/picl/v1/sessionToken', 32*2)
 
-The key material you’ll get out of the HKDF needs to be separated into two
+The key material you'll get out of the HKDF needs to be separated into two
 parts, the first 32 hex characters are the ``hawk id``, and the next 32 ones are the
 ``hawk key``::
+
+  .. code-block:: python
 
     credentials = {
         'id': keyMaterial[0:32]
@@ -78,5 +109,7 @@ Run tests
 =========
 
 To run test, you can use tox::
+
+  .. code-block:: bash
 
     tox

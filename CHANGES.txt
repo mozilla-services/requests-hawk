@@ -1,10 +1,14 @@
 CHANGELOG
 =========
 
-0.3.0 (unreleased)
+1.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Simplified API for using HawkAuth when the id and key are known. (#8)
+- Added support for overriding the default algorithm (sha256) when deriving
+  credentials from the hawk session token, via a new ``algorithm`` parameter.
+
+See the README for migration advice if you use the ``credentials`` parameter.
 
 
 0.2.1 (2015-10-14)
