@@ -16,13 +16,13 @@ across mozilla services projects.
 Great, how can I use it?
 ========================
 
-First, you'll need to install it::
+First, you'll need to install it:
 
 .. code-block:: bash
 
     pip install requests-hawk
 
-Then, in your project, if you know the `id` and `key`, you can use::
+Then, in your project, if you know the `id` and `key`, you can use:
 
 .. code-block:: python
 
@@ -32,7 +32,7 @@ Then, in your project, if you know the `id` and `key`, you can use::
     hawk_auth = HawkAuth(id='my-hawk-id', key='my-hawk-secret-key')
     requests.post("https://example.com/url", auth=hawk_auth)
 
-Or if you need to derive them from the hawk session token, instead use::
+Or if you need to derive them from the hawk session token, instead use:
 
 .. code-block:: python
 
@@ -61,14 +61,14 @@ Integration with httpie
 requests to a distant server in a nice and easy way. Under the hood, ``httpie``
 uses the requests library. We've made it simple for you to plug hawk with it.
 
-If you know the id and key, use it like that::
+If you know the id and key, use it like that:
 
 .. code-block:: bash
 
    http POST localhost:5000/registration\
    --auth-type=hawk --auth='id:key'
 
-Or, if you want to use the hawk session token, you can do as follows::
+Or, if you want to use the hawk session token, you can do as follows:
 
 .. code-block:: bash
 
@@ -87,7 +87,7 @@ The server gives you a session token, that you'll need to derive to get the
 hawk credentials.
 
 Do an HKDF derivation on the given session token. You'll need to use the
-following parameters::
+following parameters:
 
 .. code-block:: python
 
@@ -95,7 +95,7 @@ following parameters::
 
 The key material you'll get out of the HKDF needs to be separated into two
 parts, the first 32 hex characters are the ``hawk id``, and the next 32 ones are the
-``hawk key``::
+``hawk key``:
 
 .. code-block:: python
 
@@ -108,7 +108,7 @@ parts, the first 32 hex characters are the ``hawk id``, and the next 32 ones are
 Run tests
 =========
 
-To run test, you can use tox::
+To run test, you can use tox:
 
 .. code-block:: bash
 
