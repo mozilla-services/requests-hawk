@@ -42,7 +42,7 @@ class TestHawkAuth(unittest.TestCase):
                         "Hash doesn't match")
         self.assertTrue('ts="1431698426"' in auth_header,
                         "Timestamp doesn't match")
-        self.assertEqual(r.body, '{"foo": "bar"}')
+        self.assertEqual(r.body, b'{"foo": "bar"}')
 
     def test_overriding_credentials_algorithm(self):
         auth = HawkAuth(id='test_id', key='test_key', algorithm='sha1')
@@ -94,4 +94,4 @@ class TestHawkAuth(unittest.TestCase):
 
         self.assertTrue('ts="1431698847"' in r.headers['Authorization'],
                         "Timestamp doesn't match")
-        self.assertEqual(r.body, '{"foo": "bar"}')
+        self.assertEqual(r.body, b'{"foo": "bar"}')
