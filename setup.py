@@ -10,7 +10,7 @@ with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 with codecs.open(os.path.join(here, 'CHANGES.txt'), encoding='utf-8') as f:
     CHANGES = f.read()
 
-requires = ['requests!=2.8.0', 'mohawk']
+requires = ['requests', 'mohawk']
 
 setup(name='requests-hawk',
       version='1.1.0.dev0',
@@ -21,10 +21,11 @@ setup(name='requests-hawk',
           "Programming Language :: Python",
           "License :: OSI Approved :: Apache Software License",
           "Programming Language :: Python :: 2",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3",
-          "Programming Language :: Python :: 3.4"
+          "Programming Language :: Python :: 3.6"
+          "Programming Language :: Python :: 3.7"
+          "Programming Language :: Python :: 3.8"
       ],
       entry_points={
           'httpie.plugins.auth.v1': [
