@@ -1,8 +1,13 @@
 Requests-Hawk
 #############
 
-.. image:: https://travis-ci.org/mozilla-services/requests-hawk.png
+|pypi| |travis|
+
+.. |travis| image:: https://travis-ci.org/mozilla-services/requests-hawk.png
     :target: https://travis-ci.org/mozilla-services/requests-hawk
+
+.. |pypi| image:: https://img.shields.io/pypi/v/requests-hawk.svg
+    :target: https://pypi.python.org/pypi/requests-hawk
 
 
 This project allows you to use `the python requests library
