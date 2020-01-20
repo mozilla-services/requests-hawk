@@ -13,7 +13,7 @@ with codecs.open(os.path.join(here, 'CHANGES.txt'), encoding='utf-8') as f:
 requires = ['requests', 'mohawk']
 
 setup(name='requests-hawk',
-      version='1.1.0.dev0',
+      version='1.0.1',
       description='requests-hawk',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -23,9 +23,9 @@ setup(name='requests-hawk',
           "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3",
-          "Programming Language :: Python :: 3.6"
-          "Programming Language :: Python :: 3.7"
-          "Programming Language :: Python :: 3.8"
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.8",
       ],
       entry_points={
           'httpie.plugins.auth.v1': [
