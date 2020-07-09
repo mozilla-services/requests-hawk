@@ -95,3 +95,9 @@ class TestHawkAuth(unittest.TestCase):
         self.assertTrue('ts="1431698847"' in r.headers['Authorization'],
                         "Timestamp doesn't match")
         self.assertEqual(r.body, b'{"foo": "bar"}')
+
+    def test_hawk_auth_supports_empty_body(self):
+        auth = HawkAuth(id='test_id', key='test_key', always_hash_content=False)
+        request = Request('GET', 'http://www.example.com', auth=auth)
+        r = request.prepare()
+        self.assertNotIn('hash="', r.headers['Authorization'])

@@ -8,6 +8,7 @@ from six.moves.urllib.parse import urlparse
 from six import text_type
 
 import mohawk
+from mohawk.base import EmptyValue
 from requests.auth import AuthBase
 
 
@@ -38,7 +39,8 @@ class HawkAuth(AuthBase):
     You should use either `hawk_session` or both `id` and 'key'.
     """
     def __init__(self, hawk_session=None, id=None, key=None, algorithm='sha256',
-                 credentials=None, server_url=None, _timestamp=None):
+                 credentials=None, server_url=None, _timestamp=None,
+                 always_hash_content=True):
         if credentials is not None:
             raise AttributeError("The 'credentials' param has been removed. "
                                  "Pass 'id' and 'key' instead, or '**credentials_dict'.")
@@ -65,6 +67,7 @@ class HawkAuth(AuthBase):
         }
         self._timestamp = _timestamp
         self.host = urlparse(server_url).netloc if server_url else None
+        self.always_hash_content = always_hash_content
 
     def __call__(self, r):
         if self.host is not None:
@@ -74,8 +77,9 @@ class HawkAuth(AuthBase):
             self.credentials,
             r.url,
             r.method,
-            content=r.body or '',
-            content_type=r.headers.get('Content-Type', ''),
+            content=r.body or EmptyValue,
+            content_type=r.headers.get("Content-Type", EmptyValue),
+            always_hash_content=self.always_hash_content,
             _timestamp=self._timestamp
         )
 
