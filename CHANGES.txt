@@ -1,10 +1,10 @@
 CHANGELOG
 =========
 
-1.1.0 (unreleased)
+1.1.0 (2020-12-16)
 ------------------
 
-- Nothing changed yet.
+- Allow to skip hashing request and response bodies with `always_hash_content`.
 
 
 1.0.1 (2020-01-20)
