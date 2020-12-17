@@ -1,0 +1,54 @@
+version: 2.1
+
+defaults:
+  docker_login: &docker_login
+    run:
+      name: Login to Dockerhub
+      command: |
+        if [ "${DOCKER_USER}" == "" ] || [ "${DOCKER_PASS}" == "" ]; then
+            echo "Skipping Login to Dockerhub, no credentials."
+        else
+            echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
+        fi
+
+jobs:
+  test_py3:
+    docker:
+      - image: debian:stable-slim
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    working_directory: /app
+    steps:
+      - run:
+          name: Install Docker build dependencies
+          command: |
+            apt update
+            apt install -y git python3 python3-pip build-essential virtualenv python3-dev
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: install
+          command: |
+            pip3 install tox codecov
+      - run:
+          name: test
+          command: |
+            tox -- --cov --cov-append
+workflows:
+  version: 2
+
+  # workflow jobs are _not_ run in tag builds by default
+  # we use filters to whitelist jobs that should be run for tags
+
+  # workflow jobs are run in _all_ branch builds by default
+  # we use filters to blacklist jobs that shouldn't be run for a branch
+
+  # see: https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
+
+  build-test-push:
+    jobs:
+      - test_py3:
+          filters:
+            tags:
+              only: /.*/
