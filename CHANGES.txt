@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.1.1 (unreleased)
+------------------
+
+- Handle cases where Content-Type is defined as bytes rather than string. (#25)
+
 1.1.0 (2020-12-16)
 ------------------
 
