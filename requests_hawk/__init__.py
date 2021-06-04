@@ -40,7 +40,7 @@ class HawkAuth(AuthBase):
     """
     def __init__(self, hawk_session=None, id=None, key=None, algorithm='sha256',
                  credentials=None, server_url=None, _timestamp=None,
-                 always_hash_content=True):
+                 always_hash_content=True, app=None):
         if credentials is not None:
             raise AttributeError("The 'credentials' param has been removed. "
                                  "Pass 'id' and 'key' instead, or '**credentials_dict'.")
@@ -68,6 +68,7 @@ class HawkAuth(AuthBase):
         self._timestamp = _timestamp
         self.host = urlparse(server_url).netloc if server_url else None
         self.always_hash_content = always_hash_content
+        self.app = app
 
     def __call__(self, r):
         if self.host is not None:
@@ -84,7 +85,8 @@ class HawkAuth(AuthBase):
             content=r.body or EmptyValue,
             content_type=content_type or EmptyValue,
             always_hash_content=self.always_hash_content,
-            _timestamp=self._timestamp
+            _timestamp=self._timestamp,
+            app=self.app
         )
 
         r.headers['Authorization'] = sender.request_header
