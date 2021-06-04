@@ -73,12 +73,16 @@ class HawkAuth(AuthBase):
         if self.host is not None:
             r.headers['Host'] = self.host
 
+        content_type = r.headers.get("Content-Type") or ""
+        if not isinstance(content_type, text_type):
+            content_type = content_type.decode("utf-8")
+
         sender = mohawk.Sender(
             self.credentials,
             r.url,
             r.method,
             content=r.body or EmptyValue,
-            content_type=r.headers.get("Content-Type", EmptyValue),
+            content_type=content_type or EmptyValue,
             always_hash_content=self.always_hash_content,
             _timestamp=self._timestamp
         )
