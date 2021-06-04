@@ -101,3 +101,12 @@ class TestHawkAuth(unittest.TestCase):
         request = Request('GET', 'http://www.example.com', auth=auth)
         r = request.prepare()
         self.assertNotIn('hash="', r.headers['Authorization'])
+
+    def test_hawk_auth_supports_binary_content_type(self):
+        headers = {'Content-Type': b'application/json'}
+        auth = HawkAuth(id='test_id', key='test_key')
+        request = Request('POST', 'https://example.com', auth=auth,
+                          headers=headers, data=b"data")
+        r = request.prepare()
+        auth_header = r.headers['Authorization']
+        self.assertTrue('id="test_id"' in auth_header, "ID doesn't match")
