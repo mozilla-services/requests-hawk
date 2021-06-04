@@ -1,10 +1,12 @@
 CHANGELOG
 =========
 
-1.1.1 (unreleased)
+1.1.1 (2021-06-04)
 ------------------
 
 - Handle cases where Content-Type is defined as bytes rather than string. (#25)
+- Allow for app mohawk sender parameter configuration
+
 
 1.1.0 (2020-12-16)
 ------------------
