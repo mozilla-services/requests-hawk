@@ -90,7 +90,7 @@ class HawkAuth(AuthBase):
             content_type=content_type or EmptyValue,
             always_hash_content=self.always_hash_content,
             _timestamp=self._timestamp,
-            ext=self.ext
+            ext=self.ext,
             app=self.app
         )
 
