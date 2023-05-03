@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.2.1 (2023-05-03)
+------------------
+
+- Add support for ext external data string (#34)
+  (thanks @jtmaclachlan)
+
 1.2.0 (unreleased)
 ------------------
 
