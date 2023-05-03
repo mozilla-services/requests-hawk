@@ -34,7 +34,7 @@ class HawkAuth(AuthBase):
       The url of the server, this is useful for hawk when signing the requests.
       In case this is omitted, fallbacks to the value of the "Host" header of
       the request (Optional).
-    
+
     :param ext:
       A string of arbitrary data to be sent along with the request (Optional).
 
