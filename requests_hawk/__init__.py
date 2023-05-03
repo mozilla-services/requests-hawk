@@ -34,13 +34,16 @@ class HawkAuth(AuthBase):
       The url of the server, this is useful for hawk when signing the requests.
       In case this is omitted, fallbacks to the value of the "Host" header of
       the request (Optional).
+    
+    :param ext:
+      A string of arbitrary data to be sent along with the request (Optional).
 
     Note that the `hawk_session` and `id` parameters are mutually exclusive.
     You should use either `hawk_session` or both `id` and 'key'.
     """
     def __init__(self, hawk_session=None, id=None, key=None, algorithm='sha256',
                  credentials=None, server_url=None, _timestamp=None,
-                 always_hash_content=True, app=None):
+                 always_hash_content=True, ext=None, app=None):
         if credentials is not None:
             raise AttributeError("The 'credentials' param has been removed. "
                                  "Pass 'id' and 'key' instead, or '**credentials_dict'.")
@@ -68,6 +71,7 @@ class HawkAuth(AuthBase):
         self._timestamp = _timestamp
         self.host = urlparse(server_url).netloc if server_url else None
         self.always_hash_content = always_hash_content
+        self.ext = ext
         self.app = app
 
     def __call__(self, r):
@@ -86,6 +90,7 @@ class HawkAuth(AuthBase):
             content_type=content_type or EmptyValue,
             always_hash_content=self.always_hash_content,
             _timestamp=self._timestamp,
+            ext=self.ext,
             app=self.app
         )
 
